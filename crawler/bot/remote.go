@@ -177,7 +177,7 @@ func (remote *Remote) do(method, contentType, url string, body io.Reader) (*http
 		remote.mux.Lock()
 		for _, callBack := range remote.responseCallBacks {
 			response.Body.Close()
-			response.Body = io.NopCloser(buffer)
+			response.Body = ioutil.NopCloser(buffer)
 			callBack(response)
 		}
 		response.Body.Close()
