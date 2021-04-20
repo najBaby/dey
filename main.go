@@ -5,6 +5,7 @@ import (
 	"deyforyou/dey/service"
 	"log"
 	"net"
+	"os"
 	"time"
 
 	"google.golang.org/grpc"
@@ -21,7 +22,8 @@ func init() {
 }
 
 func main() {
-	listener, err := net.Listen("tcp", ":80")
+	log.Printf("Starting to run on %s", os.Getenv("PORT"))
+	listener, err := net.Listen("tcp", os.Getenv("PORT"))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
