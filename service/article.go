@@ -2,8 +2,8 @@ package service
 
 import (
 	"context"
-	"deyforyou/dey/remote/bot"
-	"deyforyou/dey/remote/colorizer"
+	"deyforyou/dey/crawler/bot"
+	"deyforyou/dey/crawler/colorizer"
 	"deyforyou/dey/schema"
 	"net/http"
 	"net/url"
@@ -15,7 +15,7 @@ var articles = make([]*schema.Article, 0)
 var expression = regexp.MustCompile(`(http(s|)://.*.mp4)`)
 
 func init() {
-	var browser = bot.New()
+	var browser = bot.NewBot()
 	var serie = &Serie{
 		Bot:            browser,
 		url:            "https://www.enstream.cc/series/page-1.html",
