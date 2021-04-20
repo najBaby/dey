@@ -1,0 +1,25 @@
+
+func grpcHandlerFunc(grpc *grpc.Server, handler http.Handler) http.Handler {
+	return h2c.NewHandler(
+		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if r.ProtoMajor == 2 && strings.Contains(r.Header.Get("Content-Type"), "application/grpc") {
+				grpc.ServeHTTP(w, r)
+			} else {
+				handler.ServeHTTP(w, r)
+			}
+		}),
+		&http2.Server{})
+}
+
+func proxyHandlerFunc() {
+	ctx := context.Background()
+	mux := runtime.NewServeMux()
+	dopts := []grpc.DialOption{grpc.WithInsecure()}
+	schema.RegisterArticleServiceHandlerFromEndpoint(ctx, mux, "9000", dopts)
+}
+
+func main() {
+	proxyHandlerFunc()
+	mux := http.NewServeMux()
+	log.Fatalln(http.ListenAndServe(":9000", grpcHandlerFunc(server, mux)))
+}
