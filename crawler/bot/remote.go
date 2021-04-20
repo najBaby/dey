@@ -181,7 +181,7 @@ func (remote *Remote) do(method, contentType, url string, body io.Reader) (*http
 			callBack(response)
 		}
 		response.Body.Close()
-		response.Body = io.NopCloser(buffer)
+		response.Body = ioutil.NopCloser(buffer)
 		if callBack, ok := remote.responseMapCallBacks[url]; ok {
 			callBack(response)
 		}
