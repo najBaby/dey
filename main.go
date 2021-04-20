@@ -3,6 +3,7 @@ package main
 import (
 	"deyforyou/dey/schema"
 	"deyforyou/dey/service"
+	"fmt"
 	"log"
 	"net"
 	"os"
@@ -23,7 +24,7 @@ func init() {
 
 func main() {
 	log.Printf("Starting to run on %s", os.Getenv("PORT"))
-	listener, err := net.Listen("tcp", os.Getenv("PORT"))
+	listener, err := net.Listen("tcp", fmt.Sprintf(":%s", os.Getenv("PORT")))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
