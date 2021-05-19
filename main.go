@@ -1,13 +1,14 @@
 package main
 
 import (
-	"deyforyou/dey/schema"
-	"deyforyou/dey/service"
 	"fmt"
 	"log"
 	"net"
-	"os"
+	"sync"
 	"time"
+
+	"deyforyou/dey/schema"
+	"deyforyou/dey/service"
 
 	"google.golang.org/grpc"
 )
@@ -19,12 +20,12 @@ func init() {
 }
 
 func init() {
-	schema.RegisterArticleServiceServer(server, service.NewArticleServiceServer())
+	schema.RegisterMovieServiceServer(server, service.NewMovieServiceServer())
 }
 
 func main() {
-	log.Printf("Starting to run on %s", os.Getenv("PORT"))
-	listener, err := net.Listen("tcp", fmt.Sprintf(":%s", os.Getenv("PORT")))
+	log.Printf("Starting to run on %s", "9000")
+	listener, err := net.Listen("tcp", fmt.Sprintf(":%s", "9000"))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
@@ -34,13 +35,15 @@ func main() {
 	}
 }
 
-func runAfter(d time.Duration, f func()) {
-	t := time.NewTicker(d)
+func Run(d time.Duration, f func()) {
 	f()
-	for {
-		select {
-		case <-t.C:
-			go f()
-		}
+	group := new(sync.WaitGroup)
+	for range time.NewTicker(d).C {
+		group.Add(1)
+		go func() {
+			f()
+			group.Done()
+		}()
 	}
+	group.Wait()
 }
