@@ -1,10 +1,10 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"net"
-	"os"
 	"sync"
 	"time"
 
@@ -25,12 +25,9 @@ func init() {
 }
 
 func main() {
-	port := "9000"
-	if p := os.Getenv("PORT"); p != "" {
-		port = p
-	}
-	log.Printf("Starting to run on %s", port)
-	listener, err := net.Listen("tcp", fmt.Sprintf(":%s", port))
+	port := flag.String("port", "9000", "")
+	log.Printf("Starting to run on %s", *port)
+	listener, err := net.Listen("tcp", fmt.Sprintf(":%s", *port))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
