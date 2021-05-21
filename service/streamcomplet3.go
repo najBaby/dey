@@ -110,11 +110,11 @@ func (site *StreamComplet3) Movie(url string) *schema.Movie {
 				})
 			})
 		movie.Image = image
+		movie.Language = "VF"
 		movie.Subtitle = "FILM"
 		movie.Category = schema.Movie_FILM
-		movie.Synopsis = strings.TrimSpace(synopsis)
-		movie.Synopsis = element.Selection.Find("article .full-text").Contents().Text()
-
+		movie.Synopsis = strings.TrimSpace(strings.TrimPrefix(synopsis, "Synopsis"))
+		movie.Production = element.ChildText("article .short-info:nth-child(6) a")
 		<-ready
 
 		// if episodes := movie.GetVideo(); len(episodes) > 0 {
