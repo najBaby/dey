@@ -26,7 +26,7 @@ func init() {
 
 func main() {
 	port := flag.String("port", "9000", "")
-	log.Printf("Starting to run on %s", *port)
+	fmt.Printf("Starting to run on %s", *port)
 	listener, err := net.Listen("tcp", fmt.Sprintf(":%s", *port))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
