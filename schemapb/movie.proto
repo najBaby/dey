@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package google.api;
+
+import "options/annotations.proto";
+
+option go_package = "/schema";
+
+message Movie {
+    string title = 1;
+    string image = 2;
+    string video = 3;
+    string hoster = 4;
+    string source = 5;
+    string subtitle = 6;
+    string synopsis = 7;
+    string language = 8;
+    string production = 9;
+    Category category = 10;
+    repeated string genres = 11;
+
+    enum Category {
+        FILM = 0;
+        SERIE = 1;
+    }
+}
+
+message ListMoviesRequest {
+    string query = 1;
+    int64 next_page = 2;
+    int64 prev_page = 3;
+}
+
+
+
+message ListMoviesResponse {
+    repeated Movie movies = 1;
+    repeated Movie news_movies = 2;
+    repeated Movie populars_movies = 3;
+}
+
+message MovieRequest {
+    string source = 1;
+}
+
+message MovieResponse {
+    Movie movie = 1;
+}
+
+service MovieService {
+    rpc ListMovies (ListMoviesRequest) returns (ListMoviesResponse) {
+        option (google.api.http) = {
+			get: "/moviesList"
+		};
+    }
+
+    rpc Movie(MovieRequest) returns (MovieResponse) {
+        option (google.api.http) = {
+			get: "/movie"
+		};
+    }
+}
+
+
