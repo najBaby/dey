@@ -45,9 +45,23 @@ func (ass *MovieServiceServer) Movie(
 	context context.Context,
 	request *schema.MovieRequest,
 ) (*schema.MovieResponse, error) {
-	movie := new(schema.Movie)
 
 	streamComplet3 := NewStreamComplet3()
-	movie = streamComplet3.Movie(request.GetSource())
+	movie := streamComplet3.Movie(request.GetSource())
 	return &schema.MovieResponse{Movie: movie}, nil
+}
+
+type Movie interface {
+	MovieFilm
+	MovieSerie
+}
+
+type MovieFilm interface {
+	Film()
+	Films()
+}
+
+type MovieSerie interface {
+	Serie()
+	Series()
 }

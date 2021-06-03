@@ -67,7 +67,7 @@ func (site *StreamComplet3) ListMovies(element *html.Element) []*schema.Movie {
 			movie.Title = title
 			movie.Image = image
 			movie.Source = source
-			movie.Subtitle = "FILM"
+			movie.Subtitle = "LE FILM"
 
 			movies = append(movies, movie)
 		})
